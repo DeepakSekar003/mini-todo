@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Mini Todo</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="card">
+    <h1>Todo App</h1>
+
+    <input id="todoInput" placeholder="Enter task" />
+    <button onclick="addTodo()">Add</button>
+
+    <ul id="todoList"></ul>
+  </div>
+
+  <script>
+    async function loadTodos() {
+      const res = await fetch("/api/todos");
+      const data = await res.json();
+      const list = document.getElementById("todoList");
+      list.innerHTML = "";
+      data.forEach(t => {
+        const li = document.createElement("li");
+        li.textContent = t;
+        list.appendChild(li);
+      });
+    }
+
+    async function addTodo() {
+      const input = document.getElementById("todoInput");
+      await fetch("/api/todos", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ task: input.value })
+      });
+      input.value = "";
+      loadTodos();
+    }
+
+    loadTodos();
+  </script>
+</body>
+</html>
