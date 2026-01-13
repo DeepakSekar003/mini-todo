@@ -4,7 +4,7 @@ os: linux
 files:
   - source: /
     destination: /home/ubuntu/mini-todo
-    overwrite: true
+    overwrite: true   # ensures old files are replaced
 
 hooks:
   BeforeInstall:

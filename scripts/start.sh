@@ -1,15 +1,10 @@
 #!/bin/bash
+cd /home/ubuntu/mini-todo || exit 1
 
-cd /home/ubuntu/mini-todo
-
-echo "Starting app using PM2..."
-
-# Stop app if running (do not fail if not running)
-pm2 stop mini-todo || true
+# Kill old server
+sudo fuser -k 3000/tcp || true
 pm2 delete mini-todo || true
 
-# START CORRECT FILE
-pm2 start index.js --name mini-todo
-
-# Save PM2 process
+# Start server from correct folder
+pm2 start index.js --name mini-todo --cwd /home/ubuntu/mini-todo
 pm2 save
