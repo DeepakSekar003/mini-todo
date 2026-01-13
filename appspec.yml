@@ -4,8 +4,14 @@ os: linux
 files:
   - source: /
     destination: /home/ubuntu/mini-todo
+    overwrite: true   # <-- Added to overwrite existing files
 
 hooks:
+  BeforeInstall:
+    - location: scripts/clean_old_files.sh
+      timeout: 300
+      runas: ubuntu
+
   Install:
     - location: scripts/install.sh
       timeout: 300
