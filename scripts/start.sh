@@ -1,18 +1,15 @@
 #!/bin/bash
-echo "Starting start.sh script..."
+set -e
 
-# Navigate to app directory
-cd /home/ubuntu/mini-todo || exit
+cd /home/ubuntu/mini-todo
 
-# Stop any previous instance of the app (if running)
-APP_PID=$(pgrep -f "node index.js")
-if [ ! -z "$APP_PID" ]; then
-  echo "Stopping existing app process $APP_PID..."
-  kill -9 $APP_PID
+echo "Restarting Express app using PM2..."
+
+pm2 describe mini-todo > /dev/null
+if [ $? -eq 0 ]; then
+  pm2 restart mini-todo
+else
+  pm2 start index.js --name mini-todo
 fi
 
-# Start the app in background
-echo "Starting app..."
-nohup node index.js > app.log 2>&1 &
-
-echo "App started successfully!"
+pm2 save
