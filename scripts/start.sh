@@ -9,7 +9,7 @@ pm2 describe mini-todo > /dev/null
 if [ $? -eq 0 ]; then
   pm2 restart mini-todo
 else
-  pm2 start index.js --name mini-todo
+  pm2 start app.js --name mini-todo
 fi
 
 pm2 save
