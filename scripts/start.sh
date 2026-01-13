@@ -1,15 +1,15 @@
 #!/bin/bash
-set -e
 
 cd /home/ubuntu/mini-todo
 
-echo "Restarting Express app using PM2..."
+echo "Starting app using PM2..."
 
-pm2 describe mini-todo > /dev/null
-if [ $? -eq 0 ]; then
-  pm2 restart mini-todo
-else
-  pm2 start app.js --name mini-todo
-fi
+# Stop app if running (do not fail if not running)
+pm2 stop mini-todo || true
+pm2 delete mini-todo || true
 
+# START CORRECT FILE
+pm2 start index.js --name mini-todo
+
+# Save PM2 process
 pm2 save
